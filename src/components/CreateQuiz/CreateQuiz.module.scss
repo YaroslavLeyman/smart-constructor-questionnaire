@@ -1,0 +1,250 @@
+.container {
+    margin: auto;
+    padding-top: 40px;
+
+    .steps {
+        display: block;
+        width: 100%;
+    }
+
+    .stepsList {
+        display: flex;
+        margin-bottom: 40px;
+        padding: 0;
+        width: 90%;
+        flex-direction: row;
+    }
+
+    .stepsLink {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-right: 15px;
+        border-radius: 5px;
+        border: 1px solid;
+    }
+
+    .stepCreate {
+        display: flex;
+        justify-content: center;
+        margin: 0;
+        flex-direction: row;
+    }
+
+    .stepContent {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: rgb(174, 105, 214);
+        margin: 10px;
+        min-height: 300px;
+        border-radius: 5px;
+    }
+
+    .stepContentInfoHeader {
+        color: #fff;
+        font-size: 2rem;
+        padding-bottom: 25px;
+    }
+
+    .footer {
+        margin-top: 30px;
+    }
+
+    .stepFooter {
+        background-color: #fff;
+        border-radius: 5px;
+        display: flex;
+        list-style: none;
+        margin: auto;
+        padding: 0 0 20px 0;
+    }
+
+    .stepFooterButton {
+        padding-right: 20px;
+    }
+
+    .blockNewQuestion {
+        border: 1px solid #ae69d6;
+        width: 100%;
+        border-radius: 5px;
+        padding: 20px;
+        margin-top: 20px;
+    }
+
+    .newQuestion {
+        text-transform: uppercase;
+        background-color: #ae69d6;
+        color: #fff;
+        padding: 4px 10px;
+        border-radius: 5px;
+    }
+
+    .paragraphQuestion {
+        margin: 0;
+        padding-top: 20px;
+    }
+
+    .blockButtonQuestion {
+        margin-top: 20px;
+    }
+
+    .buttonAddQuestion {
+        margin-left: 20px;
+    }
+
+    .typesResults {
+        margin-top: 30px;
+    }
+
+    .blockResults {
+        margin-top: 25px;
+        border: 1px solid #ae69d6;;
+        border-radius: 5px;
+        padding: 15px;
+    }
+
+    .descrTypesResult {
+        margin: 0;
+        padding-bottom: 15px;
+        &:last-of-type {
+            padding-bottom: 0;
+        }
+    }
+
+    .buttonAddResult {
+        background-color: #ae69d6;
+        border: 1px solid #ae69d6;;
+        color: #fff;
+    }
+
+    .formQuizTypeResult {
+        margin-top: 15px;
+    }
+
+    .formResult {
+        margin-top: 15px;
+    }
+
+    .turnOnContacts {
+        margin-top: 20px;
+    }
+
+    .methodCollectingContacts {
+        margin-top: 15px;
+    }
+
+    .textContacts {
+        margin-top: 15px;
+    }
+
+    .frormDesign {
+        display: flex;
+        margin-top: 25px;
+    }
+
+    .frormGroupDesign {
+        display: flex;
+        padding-left: 30px;
+
+        &:first-of-type {
+            padding-left: 0;
+        }
+    }
+
+    .titleFormDesign {
+        padding-right: 10px;
+        font-size: 19px;
+    }
+
+    .titleDesign {
+        margin: 25px 0 0 0;
+    }
+
+    .pictureDesign {
+        margin-top: 15px;
+    }
+
+    .showFormDesign {
+        display: flex;
+        align-items: baseline;
+    }
+
+    .blockExpertDesign {
+        margin-top: 10px;
+        border: 1px solid #ae69d6;;
+        border-radius: 5px;
+        padding: 15px;
+    }
+
+    .jobExpertDesign {
+        margin-top: 10px;
+    }
+
+    .photoExpertDesign {
+        margin-top: 10px;
+    }
+
+    .blockDiscountDesign {
+        margin-top: 10px;
+        border: 1px solid #ae69d6;;
+        border-radius: 5px;
+        padding: 15px;
+    }
+
+    .sizeDiscountDesign {
+        margin-top: 10px;
+    }
+
+    .chooseLanguageDesign {
+        margin-top: 15px;
+    }
+
+    .animationButtonDesign {
+        margin-top: 15px;
+    }
+
+    .animationSlidesDesign {
+        margin-top: 15px;
+    }
+
+    .redefinitionStylesDesign {
+        margin: 25px 0 15px 0;
+        font-size: 1.25rem;
+        font-weight: 500;
+        line-height: 1.2;
+    }
+
+    .blockExtraSetting {
+        width: 50%;
+        margin-top: 25px;
+        border: 1px solid #ae69d6;;
+        border-radius: 5px;
+        padding: 15px;
+    }
+
+    .descrExtraSetting {
+        margin: 0;
+        padding-bottom: 15px;
+        &:last-of-type {
+            padding-bottom: 0;
+        }
+    }
+
+    .titleExtraSetting {
+        margin-top: 25px;
+    }
+
+    .webhookExtraSetting {
+        margin-top: 15px;
+    }
+
+    .integrationsExtraSetting {
+        width: 50%;
+        margin-top: 25px;
+        border: 1px solid #ae69d6;;
+        border-radius: 5px;
+        padding: 15px;
+    }
+
+}

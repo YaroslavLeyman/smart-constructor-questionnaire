@@ -1,0 +1,17 @@
+.navbar {
+    min-height: 70px;
+    border-radius: 5px;
+}
+
+.nav {
+    margin: auto;
+}
+
+.navLink {
+    color: #fff;
+    text-decoration: none;
+    font-size: 20px;
+    &:last-of-type {
+        padding-left: 20px;
+    }
+}
