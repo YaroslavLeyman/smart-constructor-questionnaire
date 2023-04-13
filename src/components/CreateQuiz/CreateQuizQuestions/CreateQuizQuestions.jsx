@@ -1,144 +1,112 @@
-import React, { useCallback } from "react";
+import React from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
+import { Row, Col, Card, Button, Form } from "react-bootstrap";
 import styles from "../CreateQuiz.module.scss";
-import { Row, Col, Card, Form, Button, FloatingLabel } from "react-bootstrap";
+import QuestionItem from "./QuestionItem/QuestionItem";
+import CreateQuestionItem from "./CreateQuestionItem/CreateQuestionItem";
+import QuestionItemAnswer from "./QuestionItemAnswer/QuestionItemAnswer";
+import {
+  addQuestionItem,
+  selectQuestion,
+} from "../../../redux/actions/quizActions";
+ 
 
+function CreateQuizQuestions() {
+  const dispatch = useDispatch();
+  const currentQuizIndex = useSelector((state) => state.quiz.currentQuizIndex);
+  const questions = useSelector(
+    (state) => state.quiz.quizzes[currentQuizIndex]?.questions || []
+  );
 
-function CreateQuizQuestions({quiz, setQuiz}) {
+  const selectedQuestion = useSelector((state) => state.quiz.selectedQuestion);
+  const [isEditingAnswer, setIsEditingAnswer] = React.useState(false);
+  const [showCreateQuestionItem, setShowCreateQuestionItem] = React.useState(false);
 
-    // console.log(quiz);
-    const createQuestionsHandler = useCallback((e) => {
-        setQuiz((prevQuiz) => ({...prevQuiz.questions, [e.target.name]: e.target.value}));
-    }, [setQuiz]);
-    
-    const createChooseSwitchHandler = useCallback((e) => {
-        setQuiz((prevQuiz) => ({
-            ...prevQuiz,
-            questions: {
-            ...prevQuiz.questions,
-            [e.target.name]: e.target.checked,
-            },
-        }));
-    }, [setQuiz]);
+  React.useEffect(() => {
+    const hasQuestionsChanged = new CustomEvent("hasQuestionsChanged", {
+      detail: questions.length > 0,
+    });
+    window.dispatchEvent(hasQuestionsChanged);
+  }, [questions]);
 
-    const createDropDownSwitchHandler = useCallback((e) => {
-        setQuiz((prevQuiz) => ({
-            ...prevQuiz,
-            questions: {
-            ...prevQuiz.questions,
-            [e.target.name]: e.target.checked,
-            },
-        }));
-    }, [setQuiz]);
+  const handleAddQuestion = (question) => {
+    if (question.text) {
+      dispatch(addQuestionItem(question, currentQuizIndex));
+      setShowCreateQuestionItem(false);
+    }
+  };
 
-    console.log(quiz.questions);
+  const [resetForm, setResetForm] = React.useState(() => () => {});
 
-    return (
-        <Row>
-            <Col>
-                <Card>
-                    <Card.Body>
-                        <Card.Title>Вопросы</Card.Title>
-                            <Form>
-                                <Button href="#" size="sm">
-                                    + Вопрос
-                                </Button>
-                                <div className={styles.blockNewQuestion}>
-                                    <span className={styles.newQuestion}>новый вопрос</span>
-                                    <p className={styles.paragraphQuestion}>Укажите необходимые данные и нажмите добавить</p>
-                                </div>
-                            </Form>
-                    </Card.Body>
-                </Card>
-            </Col>
-            <Col>
-                <Card>
-                    <Card.Body>
-                        <Form>
-                            <FloatingLabel controlId="floatingSelect" label="ТИП ВОПРОСА">
-                                <Form.Select aria-label="Floating label select example" 
-                                    name="textTypeSelect" 
-                                    onChange={createQuestionsHandler}
-                                >
-                                    <option>Выбор из нескольких текстовых вариантов</option>
-                                    <option value="1">Выбор из нескольких вариантов с картинками</option>
-                                    <option value="2">Мотиватор. Варианты с картинками или без них</option>
-                                    <option value="3">ДА/НЕТ. Когда нужно получить утвердительный или отрицательный ответ</option>
-                                    <option value="4">Числовое. Позволяет запросить числовое значение</option>
-                                    <option value="5">Произвольный ввод текста (однострочный или многострочный)</option>
-                                    <option value="6">Загрузка файла. Позволяет посетителю загрузить свой файл</option>
-                                </Form.Select>
-                            </FloatingLabel>
-                            <Form.Group controlId="formQuestionText">
-                                <Form.Label>Текст вопроса</Form.Label>
-                                <Form.Control
-                                    type="text"
-                                    placeholder="Например, сколько комнат в вашей квартире?"
-                                    name="textQuestion"
-                                    onChange={createQuestionsHandler}
-                                />
-                            </Form.Group>
-                            <Form.Group className="mb-3" controlId="formQuestionHint">
-                                <Form.Label>Текст подсказки</Form.Label>
-                                <Form.Control 
-                                    as="textarea" 
-                                    rows={3}
-                                    placeholder="Необязательно, но очень рекомендуем заполнить, например: Количество комнат влияет на итоговый расчет системы кондиционирования"
-                                    name="textHint"
-                                    onChange={createQuestionsHandler} 
-                                />
-                            </Form.Group>
-                            <Form.Check
-                                className="mt-3"
-                                type="switch"
-                                label="ВОЗМОЖНОСТЬ ВЫБОРА НЕСКОЛЬКИХ ВАРИАНТОВ"
-                                name="switchChooseAnyVariant"
-                                onClick={createChooseSwitchHandler}
-                            />
-                            <Form.Check
-                                className="mt-3"
-                                type="switch"
-                                label="ВЫПАДАЮЩИЙ СПИСОК"
-                                name="switchDropDownList"
-                                onClick={createDropDownSwitchHandler}
-                            />
-                            <Form.Group controlId="formQuestionPicture" className="mb-3">
-                                <Form.Label>Картинка вопроса</Form.Label>
-                                <Form.Control 
-                                    type="file" 
-                                    size="sm" 
-                                    name="pictureQuestion"
-                                />
-                            </Form.Group>
-                            <Form.Group controlId="formQuestionAnswer">
-                                <Form.Label>Текст в случае правильного ответа</Form.Label>
-                                <Form.Control
-                                    type="text"
-                                    placeholder="Правильный ответ"
-                                    name="textRightAnswer"
-                                    onChange={createQuestionsHandler}
-                                />
-                            </Form.Group>
-                            <Form.Group controlId="formQuestionWrongAnswer">
-                                <Form.Label>Текст в случае неправильного ответа</Form.Label>
-                                <Form.Control
-                                    type="text"
-                                    placeholder="Неравильный ответ"
-                                    name="textWrongAnswer"
-                                    onChange={createQuestionsHandler}
-                                />
-                            </Form.Group>
-                            <Row className={styles.blockButtonQuestion}>
-                                <Col>
-                                    <Button variant="outline-danger">Отменить</Button>
-                                    <Button variant="outline-primary" className={styles.buttonAddQuestion}>Добавить</Button>
-                                </Col>
-                            </Row>
-                        </Form>
-                    </Card.Body>
-                </Card>
-            </Col>
-        </Row>
-    );
+  const handleResetFormClick = () => {
+    resetForm();
+    dispatch(selectQuestion(null));
+    setShowCreateQuestionItem(true);
+  };
+
+  return (
+    <Row>
+      <Col>
+        <Card>
+          <Card.Body>
+            <div className={styles.containerQuestion}>
+              <Card.Title>Вопросы</Card.Title>
+              <Button size="sm" onClick={handleResetFormClick}>
+                Добавить вопрос
+              </Button>
+            </div>
+            <DndProvider backend={HTML5Backend}>
+              {questions.length === 0 ? (
+                <Form>
+                  <div className={styles.blockNewQuestion}>
+                    <span className={styles.newQuestion}>новый вопрос</span>
+                    <p className={styles.paragraphQuestion}>
+                      Здесь будут сохраняться Ваши вопросы
+                    </p>
+                  </div>
+                </Form>
+              ) : (
+                questions.map((question, index) => (
+                  <QuestionItem
+                    key={`question-${question.id}`}
+                    questionData={question}
+                    questionIndex={index}
+                    setIsEditingAnswer={setIsEditingAnswer}
+                    onQuestionSelected={() => setShowCreateQuestionItem(true)}
+                  />
+                ))
+              )}
+            </DndProvider>
+          </Card.Body>
+        </Card>
+      </Col>
+      <Col>
+        {isEditingAnswer ? (
+          <QuestionItemAnswer
+            questionIndex={selectedQuestion}
+            setIsEditingAnswer={setIsEditingAnswer}
+          />
+        ) : (
+          showCreateQuestionItem && (
+          <CreateQuestionItem
+            onAddQuestion={handleAddQuestion}
+            setResetForm={setResetForm}
+            selectedQuestionData={
+              selectedQuestion !== null ? questions[selectedQuestion] : null
+            }
+            currentQuizIndex={currentQuizIndex}
+            selectedQuestion={selectedQuestion}
+            setShowCreateQuestionItem={setShowCreateQuestionItem}
+            onQuestionAddedOrUpdated={() => setShowCreateQuestionItem(false)}
+          />
+          )
+        )}
+      </Col>
+    </Row>
+  );
+  
 }
 
 export default CreateQuizQuestions;

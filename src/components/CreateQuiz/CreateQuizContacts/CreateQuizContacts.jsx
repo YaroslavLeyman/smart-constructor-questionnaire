@@ -9,7 +9,6 @@ function CreateQuizContacts({quiz, setQuiz}) {
     //включает свитч сбор контактов
     const [open, setOpen] = useState(false);
 
-    // console.log(quiz);
     const createContactsHandler = useCallback((e) => {
         setQuiz((prevQuiz) => ({...prevQuiz.сontacts, [e.target.name]: e.target.value}));
     }, [setQuiz]);
@@ -44,8 +43,6 @@ function CreateQuizContacts({quiz, setQuiz}) {
             },
         }));
     }, [setQuiz]);
-
-    console.log(quiz.сontacts);
 
     return (
         <Row>
