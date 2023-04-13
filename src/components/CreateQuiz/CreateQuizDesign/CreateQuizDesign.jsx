@@ -10,7 +10,7 @@ function CreateQuizDesign({quiz, setQuiz}) {
     const [open, setOpen] = useState(false);
     const [openDiscountOpen, setDiscountOpen] = useState(false);
 
-    // console.log(quiz);
+
     const createShowCoverQuizSwitchHandler = useCallback((e) => {
         setQuiz((prevQuiz) => ({
             ...prevQuiz,
@@ -78,7 +78,6 @@ function CreateQuizDesign({quiz, setQuiz}) {
         }));
     }, [setQuiz]);
 
-    console.log(quiz.design);
     
     return (
         <Row>

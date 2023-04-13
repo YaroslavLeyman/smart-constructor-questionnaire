@@ -1,5 +1,3 @@
 import React from "react";
 
-export const Templates = () => (
-    <h2>Шаблоны</h2>
-)
+export const Templates = () => <h2>Шаблоны</h2>;

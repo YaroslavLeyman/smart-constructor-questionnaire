@@ -9,7 +9,7 @@ function CreateQuizExtraSetting({quiz, setQuiz}) {
     const [open, setOpen] = useState(false);
     const [webhookOpen, setWebhookOpen] = useState(false);
     
-    // console.log(quiz);
+
     const createDefaultEmailSwitchHandler = useCallback((e) => {
         setQuiz((prevQuiz) => ({
             ...prevQuiz,
@@ -82,7 +82,6 @@ function CreateQuizExtraSetting({quiz, setQuiz}) {
         setQuiz((prevQuiz) => ({...prevQuiz.extraSetting, [e.target.name]: e.target.value}));
     }, [setQuiz]);
 
-    console.log(quiz.extraSetting);
 
     return (
         <Row>

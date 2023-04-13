@@ -9,7 +9,6 @@ function CreateQuizResults({quiz, setQuiz}) {
     const [open, setOpen] = useState(false);
     const [add, setAdd] = useState(false);
 
-    // console.log(quiz);
     const createResultsHandler = useCallback((e) => {
         setQuiz((prevQuiz) => ({...prevQuiz.results, [e.target.name]: e.target.value}));
     }, [setQuiz]);
@@ -56,8 +55,6 @@ function CreateQuizResults({quiz, setQuiz}) {
         }));
     }, [setQuiz]);
     
-
-    console.log(quiz.results);
 
     return (
         <Row>
