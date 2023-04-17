@@ -1,7 +1,9 @@
 import React, { useState, useCallback, useEffect } from "react";
-import { Form, Button, Row, Col, Card, Collapse } from "react-bootstrap";
+import { Form, Button, Row, Col, Card, Collapse, Toast } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { v4 as uuidv4 } from "uuid";
+import styles from "./CreateQuizSetting.module.scss";
+import { toPng } from "html-to-image";
 import {
   addQuiz,
   updateQuiz,
@@ -24,6 +26,7 @@ function CreateQuizSetting() {
   const currentQuizIndex = useSelector((state) => state.quiz.currentQuizIndex);
   const quizzes = useSelector((state) => state.quiz.quizzes);
   const dispatch = useDispatch();
+  const [showToast, setShowToast] = useState(false);
 
   useEffect(() => {
     if (currentQuizIndex !== null && currentQuizIndex !== undefined) {
@@ -100,15 +103,30 @@ function CreateQuizSetting() {
     [setState]
   );
 
-  const handleSaveSettings = () => {
+  const generateThumbnail = async () => {
+    const node = document.getElementById("thumbnail-container");
+
+    if (node) {
+      const dataUrl = await toPng(node);
+      return dataUrl;
+    }
+    return null;
+  };
+
+  const handleSaveSettings = async () => {
+    const thumbnail = await generateThumbnail();
+
     if (currentQuizIndex !== null && currentQuizIndex !== undefined) {
-      dispatch(updateQuiz(state.quiz, currentQuizIndex));
+      dispatch(
+        updateQuiz({ ...state.quiz, image: thumbnail }, currentQuizIndex)
+      );
     } else {
-      const newQuiz = { ...state.quiz, id: uuidv4() };
+      const newQuiz = { ...state.quiz, id: uuidv4(), image: thumbnail };
       dispatch(addQuiz(newQuiz));
       const newIndex = quizzes.length;
       dispatch(setCurrentQuizIndex(newIndex));
     }
+    setShowToast(true);
   };
 
   return (
@@ -116,9 +134,9 @@ function CreateQuizSetting() {
       <Col>
         <Card>
           <Card.Body>
-            <Card.Title>Настройки</Card.Title>
+            <Card.Title className="m-0">Обложка квиза</Card.Title>
             <Form>
-              <Form.Group controlId="formQuizName">
+              <Form.Group className="mt-3" controlId="formQuizName">
                 <Form.Label>Название квиза</Form.Label>
                 <Form.Control
                   type="text"
@@ -129,7 +147,7 @@ function CreateQuizSetting() {
                 />
               </Form.Group>
 
-              <Form.Group controlId="formQuizTitle">
+              <Form.Group className="mt-3" controlId="formQuizTitle">
                 <Form.Label>Заголовок квиза</Form.Label>
                 <Form.Control
                   type="text"
@@ -140,11 +158,11 @@ function CreateQuizSetting() {
                 />
               </Form.Group>
 
-              <Form.Group controlId="formQuizButton">
+              <Form.Group className="mt-3" controlId="formQuizButton">
                 <Form.Label>Текст кнопки</Form.Label>
                 <Form.Control
                   type="text"
-                  placeholder="Например, начать"
+                  placeholder="Например, пройти тест"
                   name="textButtonQuiz"
                   value={state.quiz.setting.textButtonQuiz || ""}
                   onChange={createQuizHandler}
@@ -153,7 +171,7 @@ function CreateQuizSetting() {
 
               <Form.Group controlId="formQuizAddConact">
                 <Form.Check
-                  className="mt-3"
+                  className="mt-4"
                   type="switch"
                   id="custom-switch"
                   label="Добавить контакную информацию"
@@ -165,7 +183,10 @@ function CreateQuizSetting() {
                 />
                 <Collapse in={state.open}>
                   <div id="example-collapse">
-                    <Form.Group controlId="formQuizNameCompany">
+                    <Form.Group
+                      className="mt-3"
+                      controlId="formQuizNameCompany"
+                    >
                       <Form.Label>Название компании</Form.Label>
                       <Form.Control
                         type="text"
@@ -178,14 +199,53 @@ function CreateQuizSetting() {
                   </div>
                 </Collapse>
               </Form.Group>
-              <Button variant="success" onClick={handleSaveSettings}>
+              <Button
+                className="mt-4"
+                variant="success"
+                onClick={handleSaveSettings}
+              >
                 Сохранить настройки
               </Button>
+              <Toast
+                onClose={() => setShowToast(false)}
+                show={showToast}
+                delay={3000}
+                autohide
+                style={
+                  {
+                    // position: "absolute",
+                    // top: 0,
+                    // right: 0,
+                  }
+                }
+              >
+                <Toast.Body>
+                  Черновик сохранен на главной странице квизов
+                </Toast.Body>
+              </Toast>
             </Form>
           </Card.Body>
         </Card>
       </Col>
-      
+      <Col>
+        <Card id="thumbnail-container">
+          <Card.Body>
+            <div className={styles.viewContainer}>
+              <div className={styles.viewContentContainer}>
+                <h2 className={styles.viewContentInfoHeader}>
+                  {state.quiz.setting?.title || "Введите заголовок квиза"}
+                </h2>
+                <Button variant="primary">
+                  {state.quiz.setting.textButtonQuiz || "Пройти тест"}
+                </Button>
+              </div>
+            </div>
+            <div className={styles.viewNameCompany}>
+              {state.quiz.setting.contact.company || ""}
+            </div>
+          </Card.Body>
+        </Card>
+      </Col>
     </Row>
   );
 }

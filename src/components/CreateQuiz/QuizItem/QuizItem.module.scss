@@ -10,13 +10,20 @@
     justify-content: space-between;
     gap: 20px;
   }
+  .image {
+    width: 100%;
+    max-width: 200px;
+    height: auto;
+    object-fit: cover;
+  }
 }
 
 .footer {
   display: flex;
+  justify-content: space-between;
   align-items: center;
   margin-top: 20px;
-  padding-left: 5px;
+  padding: 10px;
   color: red;
   height: 48px;
   background: hsla(0, 0%, 96.1%, 0.68);

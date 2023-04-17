@@ -46,7 +46,7 @@ export const Quizzes = () => {
             </Dropdown.Toggle>
 
             <Dropdown.Menu>
-            <Dropdown.Item as={NavLink} to="/quiz/create">
+            <Dropdown.Item as={NavLink} to="/quiz/create" onClick={handleCreateQuiz}>
                 С нуля
               </Dropdown.Item>
             </Dropdown.Menu>
