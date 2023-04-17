@@ -2,6 +2,7 @@ import { v4 as uuidv4 } from "uuid";
 
 export const ADD_QUIZ = "ADD_QUIZ";
 export const UPDATE_QUIZ = "UPDATE_QUIZ";
+export const DELETE_QUIZ = "DELETE_QUIZ";
 export const SET_CURRENT_QUIZ_INDEX = "SET_CURRENT_QUIZ_INDEX";
 export const RESET_CURRENT_QUIZ_INDEX = "RESET_CURRENT_QUIZ_INDEX";
 export const SET_SAVED_QUIZ_INDEX = "SET_SAVED_QUIZ_INDEX";
@@ -22,6 +23,11 @@ export const addQuiz = (quizData) => ({
 export const updateQuiz = (quizData, quizIndex) => ({
   type: UPDATE_QUIZ,
   payload: { quizData, quizIndex },
+});
+
+export const deleteQuiz = (quizIndex) => ({
+  type: DELETE_QUIZ,
+  payload: quizIndex,
 });
 
 export const setCurrentQuizIndex = (quizIndex) => ({

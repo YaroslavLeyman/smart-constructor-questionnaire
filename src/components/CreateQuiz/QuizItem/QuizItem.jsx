@@ -3,8 +3,9 @@ import styles from "./QuizItem.module.scss";
 import { Card, Button, Image, Dropdown, Modal } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { BsTrash } from "react-icons/bs";
 import defaultImage from "../../../images/default-image.PNG";
-import { setCurrentQuizIndex } from "../../../redux/actions/quizActions";
+import { setCurrentQuizIndex, deleteQuiz } from "../../../redux/actions/quizActions";
 import Quiz from "../../Quiz/Quiz";
 
 const QuizItem = ({ quizData, quizIndex }) => {
@@ -35,6 +36,10 @@ const QuizItem = ({ quizData, quizIndex }) => {
     navigate("/quiz/create");
   };
 
+  const handleDeleteQuiz = () => {
+    dispatch(deleteQuiz(quizIndex));
+  };
+
   return (
     <>
       <Card className={styles.card}>
@@ -42,7 +47,7 @@ const QuizItem = ({ quizData, quizIndex }) => {
           <div className={styles.container}>
             <div className={styles.contentContainer}>
               <div>
-                <Image src={defaultImage} />
+                <Image src={localQuizData.image || defaultImage} className={styles.image} />
               </div>
               <div>
                 <Card.Title>{name}</Card.Title>
@@ -78,6 +83,14 @@ const QuizItem = ({ quizData, quizIndex }) => {
             ) : (
               "Черновик"
             )}
+            <Button
+              variant="outline-danger"
+              size="sm"
+              title="Удалить"
+              onClick={handleDeleteQuiz}
+            >
+              <BsTrash />
+            </Button>
           </div>
         </Card.Body>
       </Card>

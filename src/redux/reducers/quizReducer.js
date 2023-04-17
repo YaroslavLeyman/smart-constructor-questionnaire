@@ -1,6 +1,7 @@
 import {
   ADD_QUIZ,
   UPDATE_QUIZ,
+  DELETE_QUIZ,
   SET_CURRENT_QUIZ_INDEX,
   RESET_CURRENT_QUIZ_INDEX,
   SET_SAVED_QUIZ_INDEX,
@@ -22,7 +23,6 @@ const initialState = {
   selectedQuestion: null,
 };
 
-
 const quizReducer = (state = initialState, action) => {
   switch (action.type) {
     case ADD_QUIZ:
@@ -36,6 +36,11 @@ const quizReducer = (state = initialState, action) => {
         quizzes: state.quizzes.map((quiz, index) =>
           index === action.payload.quizIndex ? action.payload.quizData : quiz
         ),
+      };
+    case DELETE_QUIZ:
+      return {
+        ...state,
+        quizzes: state.quizzes.filter((_, index) => index !== action.payload),
       };
     case SET_CURRENT_QUIZ_INDEX:
       return {
@@ -65,31 +70,33 @@ const quizReducer = (state = initialState, action) => {
           return quiz;
         }),
       };
-      case UPDATE_QUESTION_ITEM:
-        return {
-          ...state,
-          quizzes: state.quizzes.map((quiz, quizIndex) => {
-            if (quizIndex === action.payload.quizIndex) {
-              return {
-                ...quiz,
-                questions: quiz.questions.map((question, questionIndex) => {
-                  if (questionIndex === action.payload.questionIndex) {
-                    return {
-                      ...action.payload.questionData,
-                      answers: action.payload.questionData.answers.map((answer) => ({
+    case UPDATE_QUESTION_ITEM:
+      return {
+        ...state,
+        quizzes: state.quizzes.map((quiz, quizIndex) => {
+          if (quizIndex === action.payload.quizIndex) {
+            return {
+              ...quiz,
+              questions: quiz.questions.map((question, questionIndex) => {
+                if (questionIndex === action.payload.questionIndex) {
+                  return {
+                    ...action.payload.questionData,
+                    answers: action.payload.questionData.answers.map(
+                      (answer) => ({
                         ...answer,
                         id: answer.id || uuidv4(),
-                      })),
-                    };
-                  }
-                  return question;
-                }),
-              };
-            }
-            return quiz;
-          }),
-        };
-      
+                      })
+                    ),
+                  };
+                }
+                return question;
+              }),
+            };
+          }
+          return quiz;
+        }),
+      };
+
     case DELETE_QUESTION_ITEM:
       return {
         ...state,
@@ -106,21 +113,21 @@ const quizReducer = (state = initialState, action) => {
           return quiz;
         }),
       };
-      case DUPLICATE_QUESTION_ITEM:
-        const duplicatedQuestion = action.payload.questionData;
-        return {
-          ...state,
-          quizzes: state.quizzes.map((quiz, idx) => {
-            if (idx === action.payload.quizIndex) {
-              return {
-                ...quiz,
-                questions: [...quiz.questions, duplicatedQuestion],
-              };
-            } else {
-              return quiz;
-            }
-          }),
-        };
+    case DUPLICATE_QUESTION_ITEM:
+      const duplicatedQuestion = action.payload.questionData;
+      return {
+        ...state,
+        quizzes: state.quizzes.map((quiz, idx) => {
+          if (idx === action.payload.quizIndex) {
+            return {
+              ...quiz,
+              questions: [...quiz.questions, duplicatedQuestion],
+            };
+          } else {
+            return quiz;
+          }
+        }),
+      };
     case MOVE_QUESTION_ITEM:
       const { quizIdx, fromIndex, toIndex } = action.payload;
       const quiz = state.quizzes[quizIdx];
