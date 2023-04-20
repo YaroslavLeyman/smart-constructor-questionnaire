@@ -1,14 +1,11 @@
-import React from 'react';
-import styles from './Quiz.module.scss';
-import QuizGame from './QuizGame/QuizGame';
-import QuizResult from './QuizResult/QuizResult';
-import { useSelector } from 'react-redux';
+import React from "react";
+import styles from "./Quiz.module.scss";
+import QuizGame from "./QuizGame/QuizGame";
+import QuizResult from "./QuizResult/QuizResult";
 
-function Quiz() {
-  const currentQuizIndex = useSelector((state) => state.quiz.currentQuizIndex);
-  const questions = useSelector(
-    (state) => state.quiz.quizzes[currentQuizIndex]?.questions || []
-  );
+function Quiz({ quizData }) {
+  const questions = quizData?.questions || [];
+
   const [step, setStep] = React.useState(0);
   const [correct, setCorrect] = React.useState(0);
 
@@ -22,6 +19,11 @@ function Quiz() {
     }
   };
 
+  const handleRetry = () => {
+    setStep(0);
+    setCorrect(0);
+  };
+
   return (
     <div className={styles.container}>
       {step !== questions.length ? (
@@ -32,13 +34,20 @@ function Quiz() {
           totalQuestions={questions.length}
         />
       ) : (
-        <QuizResult correct={correct} totalQuestions={questions.length} />
+        <QuizResult
+          correct={correct}
+          totalQuestions={questions.length}
+          resultsSettings={quizData?.resultsSettings}
+          onRetry={handleRetry}
+        />
       )}
     </div>
   );
 }
 
 export default Quiz;
+
+
 
 
 

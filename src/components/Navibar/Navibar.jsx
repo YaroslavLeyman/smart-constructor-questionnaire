@@ -7,7 +7,7 @@ export default function Navibar() {
 
     return (
         <>
-            <Container>
+            <Container className={styles.container}>
                 <Navbar collapseOnSelect expand="lg" bg="primary" variant="dark" className={styles.navbar}>
                     <Navbar.Toggle aria-controls="responsive-navbar-nav"/>
                     <Navbar.Collapse id="responsive-navbar-nav">

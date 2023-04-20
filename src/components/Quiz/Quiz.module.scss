@@ -1,8 +1,6 @@
 .container {
-  border-radius: 30px;
-  padding: 40px;
+  padding: 15px;
   background-color: #fff;
-  position: relative;
 
   &:before,
   &:after {
@@ -14,19 +12,5 @@
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
-  }
-
-  &:before {
-    width: 95%;
-    bottom: -10px;
-    background-color: rgba(255, 255, 255, 0.8);
-    z-index: 0;
-  }
-
-  &:after {
-    width: 90%;
-    bottom: -20px;
-    background-color: rgba(255, 255, 255, 0.3);
-    z-index: 1;
   }
 }

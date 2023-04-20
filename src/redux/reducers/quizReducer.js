@@ -4,7 +4,7 @@ import {
   DELETE_QUIZ,
   SET_CURRENT_QUIZ_INDEX,
   RESET_CURRENT_QUIZ_INDEX,
-  SET_SAVED_QUIZ_INDEX,
+  SET_QUIZ_SAVED_STATUS,
   ADD_QUESTION_ITEM,
   UPDATE_QUESTION_ITEM,
   DELETE_QUESTION_ITEM,
@@ -12,6 +12,8 @@ import {
   MOVE_QUESTION_ITEM,
   SELECT_QUESTION,
   UPDATE_ANSWER,
+  SAVE_RESULTS_SETTINGS,
+  LOAD_RESULTS_SETTINGS,
 } from "../actions/quizActions";
 
 import { v4 as uuidv4 } from "uuid";
@@ -28,7 +30,10 @@ const quizReducer = (state = initialState, action) => {
     case ADD_QUIZ:
       return {
         ...state,
-        quizzes: [...state.quizzes, { ...action.payload, questions: [] }],
+        quizzes: [
+          ...state.quizzes,
+          { ...action.payload, questions: [], isSaved: false },
+        ],
       };
     case UPDATE_QUIZ:
       return {
@@ -52,10 +57,14 @@ const quizReducer = (state = initialState, action) => {
         ...state,
         currentQuizIndex: null,
       };
-    case SET_SAVED_QUIZ_INDEX:
+    case SET_QUIZ_SAVED_STATUS:
       return {
         ...state,
-        savedQuizIndex: action.payload,
+        quizzes: state.quizzes.map((quiz, index) =>
+          index === action.payload.quizIndex
+            ? { ...quiz, isSaved: action.payload.isSaved }
+            : quiz
+        ),
       };
     case ADD_QUESTION_ITEM:
       return {
@@ -167,6 +176,20 @@ const quizReducer = (state = initialState, action) => {
           }
           return quiz;
         }),
+      };
+    case SAVE_RESULTS_SETTINGS:
+      return {
+        ...state,
+        quizzes: state.quizzes.map((quiz, index) =>
+          index === action.payload.quizIndex
+            ? { ...quiz, resultsSettings: action.payload.resultsSettings }
+            : quiz
+        ),
+      };
+    case LOAD_RESULTS_SETTINGS:
+      return {
+        ...state,
+        resultsSettings: state.quizzes[action.payload]?.resultsSettings || {},
       };
 
     default:
