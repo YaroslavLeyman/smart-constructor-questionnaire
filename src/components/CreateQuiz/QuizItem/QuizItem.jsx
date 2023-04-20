@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import styles from "./QuizItem.module.scss";
 import { Card, Button, Image, Dropdown, Modal } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { BsTrash } from "react-icons/bs";
 import defaultImage from "../../../images/default-image.PNG";
 import { setCurrentQuizIndex, deleteQuiz } from "../../../redux/actions/quizActions";
@@ -14,9 +14,9 @@ const QuizItem = ({ quizData, quizIndex }) => {
   const [localQuizData, setLocalQuizData] = useState(quizData);
   const [showModal, setShowModal] = useState(false);
 
-  const savedQuizIndex = useSelector((state) => state.quiz.savedQuizIndex);
+  const isSaved = localQuizData.isSaved;
 
-  const showDropdown = savedQuizIndex === quizIndex;
+  const showDropdown = isSaved;
 
   useEffect(() => {
     setLocalQuizData(quizData);
@@ -64,10 +64,9 @@ const QuizItem = ({ quizData, quizIndex }) => {
 
                   <Dropdown.Menu>
                     <Dropdown.Item onClick={handleShowModal}>
-                      Просмотреть
+                      Просмотреть квиз
                     </Dropdown.Item>
                     <Dropdown.Item onClick={handleQuizItemClick}>Редактировать</Dropdown.Item>
-                    <Dropdown.Item>Копировать</Dropdown.Item>
                   </Dropdown.Menu>
                 </Dropdown>
               ) : (
@@ -97,10 +96,10 @@ const QuizItem = ({ quizData, quizIndex }) => {
 
       <Modal show={showModal} onHide={handleCloseModal}>
         <Modal.Header closeButton>
-          <Modal.Title>Предпросмотр квиза</Modal.Title>
+          <Modal.Title>Просмотр квиза</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Quiz />
+          <Quiz quizData={localQuizData} />
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleCloseModal}>

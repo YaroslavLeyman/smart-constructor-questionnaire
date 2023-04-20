@@ -63,6 +63,13 @@ function QuestionItemAnswer({ questionIndex, setIsEditingAnswer }) {
     <Card>
       <Card.Body>
         <Form>
+          <Button
+            variant="outline-success"
+            className="mb-3"
+            onClick={addAnswer}
+          >
+            Добавить ответ
+          </Button>
           {answers.map((answer, index) => (
             <Form.Group controlId={`formAnswerText${index}`} key={index}>
               <Form.Label>Ответ {index + 1}</Form.Label>
@@ -73,20 +80,26 @@ function QuestionItemAnswer({ questionIndex, setIsEditingAnswer }) {
                   value={answer.text}
                   onChange={(e) => handleAnswerChange(index, e.target.value)}
                 />
-                <BsTrash
-                  className={styles.trashIcon}
-                  onClick={() => deleteAnswer(index)}
-                />
-                <Form.Check
-                  type="checkbox"
-                  label="Правильный ответ"
-                  checked={answer.isCorrect}
-                  onChange={() => handleCorrectAnswerChange(index)}
-                />
+                <div className={styles.footerAnswerContainer}>
+                  <Form.Check
+                    type="checkbox"
+                    label="Правильный ответ"
+                    checked={answer.isCorrect}
+                    onChange={() => handleCorrectAnswerChange(index)}
+                  />
+                  <Button
+                    variant="outline-danger"
+                    size="sm"
+                    title="Удалить"
+                    onClick={() => deleteAnswer(index)}
+                  >
+                    <BsTrash />
+                  </Button>
+                </div>
               </div>
             </Form.Group>
           ))}
-          <Card.Text>Нажмите кнопку добавить ответ</Card.Text>
+
           <Row className={styles.blockButtonQuestion}>
             <Col>
               <Button variant="outline-danger" onClick={handleCancel}>
@@ -99,19 +112,12 @@ function QuestionItemAnswer({ questionIndex, setIsEditingAnswer }) {
               >
                 Сохранить
               </Button>
-              <Button
-                variant="outline-success"
-                className={styles.buttonAddAnswer}
-                onClick={addAnswer}
-              >
-                Добавить ответ
-                </Button>
-        </Col>
-      </Row>
-    </Form>
-  </Card.Body>
-</Card>
-);
+            </Col>
+          </Row>
+        </Form>
+      </Card.Body>
+    </Card>
+  );
 }
 
 export default QuestionItemAnswer;

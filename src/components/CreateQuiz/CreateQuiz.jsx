@@ -1,52 +1,38 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { NavLink, Outlet, useNavigate, useLocation } from "react-router-dom";
 import styles from "./CreateQuiz.module.scss";
 import { Container, ListGroup, Button } from "react-bootstrap";
-import { setSavedQuizIndex as setSavedQuizIndexAction } from "../../redux/actions/quizActions";
+import { setQuizSavedStatus } from "../../redux/actions/quizActions";
 
 export const CreateQuiz = () => {
-  const currentQuizIndex = useSelector((state) => state.quiz.currentQuizIndex);
+  const quizIndex = useSelector((state) => state.quiz.currentQuizIndex);
   const navigate = useNavigate();
   const location = useLocation();
   const path = location.pathname;
 
   const dispatch = useDispatch();
 
-  const [hasQuestions, setHasQuestions] = useState(false);
-
-  useEffect(() => {
-    const handleHasQuestionsChanged = (event) => {
-      setHasQuestions(event.detail);
-    };
-
-    window.addEventListener("hasQuestionsChanged", handleHasQuestionsChanged);
-    return () => {
-      window.removeEventListener(
-        "hasQuestionsChanged",
-        handleHasQuestionsChanged
-      );
-    };
-  }, []);
-
   const handleBackClick = () => {
     if (path.endsWith("/questions")) {
       navigate("/quiz/create");
-      setHasQuestions(false);
+    } else if (path.endsWith("/results")) {
+      navigate("/quiz/create/questions");
     }
   };
 
   const handleNextClick = () => {
-    if (!path.endsWith("/questions")) {
-      navigate("questions");
+    if (path === "/quiz/create") {
+      navigate("/quiz/create/questions");
+    } else if (path.endsWith("/questions")) {
+      navigate("/quiz/create/results");
+    } else if (path.endsWith("/results")) {
+      dispatch(setQuizSavedStatus(quizIndex, true));
+      navigate("/quiz");
     }
   };
 
-  const handleSaveQuiz = () => {
-    dispatch(setSavedQuizIndexAction(currentQuizIndex));
-  };
-
-  const isBackDisabled = !path.endsWith("/questions");
+  const isBackDisabled = path === "/quiz/create";
 
   return (
     <>
@@ -70,6 +56,14 @@ export const CreateQuiz = () => {
             >
               Вопросы
             </ListGroup.Item>
+            <ListGroup.Item
+              as={NavLink}
+              action
+              to="results"
+              className={styles.stepsLink}
+            >
+              Результаты
+            </ListGroup.Item>
           </ListGroup>
         </div>
 
@@ -89,13 +83,13 @@ export const CreateQuiz = () => {
               </Button>
             </li>
             <li>
-              {hasQuestions ? (
-                <Button onClick={handleSaveQuiz} size="lg">Сохранить квиз</Button>
-              ) : (
-                <Button onClick={handleNextClick} size="lg">
-                  Далее
-                </Button>
-              )}
+              <Button
+                onClick={handleNextClick}
+                size="lg"
+                variant={path.endsWith("/results") ? "outline-success" : "primary"}
+              >
+                {path.endsWith("/results") ? "Сохранить квиз" : "Далее"}
+              </Button>
             </li>
           </ul>
         </footer>
@@ -103,4 +97,3 @@ export const CreateQuiz = () => {
     </>
   );
 };
-

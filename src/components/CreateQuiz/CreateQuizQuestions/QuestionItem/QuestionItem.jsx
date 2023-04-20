@@ -1,6 +1,6 @@
 import React, { useRef, useState } from "react";
 import styles from "./QuestionItem.module.scss";
-import { Card, Button } from "react-bootstrap";
+import { Card, Button, Form } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { useDrag, useDrop } from "react-dnd";
 import { BsList, BsTrash, BsLayers, BsChevronCompactUp } from "react-icons/bs";
@@ -10,6 +10,7 @@ import {
   deleteQuestionItem,
   duplicateQuestionItem,
   moveQuestionItem,
+  updateQuestionItem,
 } from "../../../../redux/actions/quizActions";
 
 function QuestionItem({
@@ -55,9 +56,9 @@ function QuestionItem({
   const questionTypeText = (() => {
     switch (questionData.type) {
       case "1":
-        return "Выбор из нескольких текстовых вариантов";
+        return "Выбор из нескольких вариантов";
       case "2":
-        return "Произвольный ввод текста (однострочный или многострочный)";
+        return "Выбор ДА/НЕТ";
       default:
         return "Варианты";
     }
@@ -84,6 +85,23 @@ function QuestionItem({
       setIsEditingAnswer(false);
       dispatch(selectQuestion(questionIndex));
       onQuestionSelected();
+    }
+  };
+
+  const handleCorrectAnswerChange = (index) => {
+    if (questionData.type === "2") {
+      const newAnswers = questionData.answers.map((answer, i) => {
+        return {
+          ...answer,
+          isCorrect: i === index,
+        };
+      });
+      dispatch(
+        updateQuestionItem(currentQuizIndex, questionIndex, {
+          ...questionData,
+          answers: newAnswers,
+        })
+      );
     }
   };
 
@@ -123,25 +141,6 @@ function QuestionItem({
                 }}
               />
             </Button>
-            <Button
-              variant="outline-dark"
-              size="sm"
-              title="Копировать"
-              onClick={handleDuplicateClick}
-            >
-              <BsLayers />
-            </Button>
-            <Button variant="outline-dark" size="sm" title="Переместить">
-              <BsList />
-            </Button>
-            <Button
-              variant="outline-danger"
-              size="sm"
-              title="Удалить"
-              onClick={handleDeleteClick}
-            >
-              <BsTrash />
-            </Button>
           </div>
         </div>
         {!isCollapsed && (
@@ -149,27 +148,64 @@ function QuestionItem({
             <Card.Text className={styles.cardTextQuestion}>{text}</Card.Text>
             {questionData.answers &&
               questionData.answers.map((answer, index) => (
-                <Card.Text key={index} className={styles.cardTextAnswer}>
+                <div key={index} className={styles.cardTextAnswer}>
                   Ответ {index + 1}: {answer.text}{" "}
-                  {answer.isCorrect && <span>(Правильный ответ)</span>}
-                </Card.Text>
+                  {questionData.type === "2" && (
+                    <Form.Check
+                      type="checkbox"
+                      label="Правильный ответ"
+                      checked={answer.isCorrect}
+                      onChange={() => handleCorrectAnswerChange(index)}
+                    />
+                  )}
+                  {answer.isCorrect && questionData.type !== "2" && (
+                    <span>(Правильный ответ)</span>
+                  )}
+                </div>
               ))}
-            {questionData.type === "2" ? (
-              <Card.Text>
-                Ответом на вопрос будет ввод произвольного текста
-              </Card.Text>
-            ) : (
-              <Button
-                variant="outline-primary"
-                className={styles.buttonAddAnswer}
-                onClick={() => {
-                  dispatch(selectQuestion(questionIndex));
-                  setIsEditingAnswer(true);
-                }}
-              >
-                {hasAnswers ? "Редактировать ответы" : "Добавить ответ"}
-              </Button>
-            )}
+
+            <div className={styles.cardFooterContainer}>
+              <div>
+                {questionData.type === "2" ? (
+                  <Card.Text className={styles.cardFooterText}>
+                    {/* Ответом на вопрос будет выбор ДА или Нет */}
+                  </Card.Text>
+                ) : (
+                  <Button
+                    variant="outline-primary"
+                    className={styles.buttonAddAnswer}
+                    onClick={() => {
+                      dispatch(selectQuestion(questionIndex));
+                      setIsEditingAnswer(true);
+                    }}
+                  >
+                    {hasAnswers ? "Редактировать ответы" : "Добавить ответы"}
+                  </Button>
+                )}
+              </div>
+
+              <div className={styles.cardFooterIcons}>
+                <Button
+                  variant="outline-dark"
+                  size="sm"
+                  title="Копировать"
+                  onClick={handleDuplicateClick}
+                >
+                  <BsLayers />
+                </Button>
+                <Button variant="outline-dark" size="sm" title="Переместить">
+                  <BsList />
+                </Button>
+                <Button
+                  variant="outline-danger"
+                  size="sm"
+                  title="Удалить"
+                  onClick={handleDeleteClick}
+                >
+                  <BsTrash />
+                </Button>
+              </div>
+            </div>
           </>
         )}
       </Card.Body>

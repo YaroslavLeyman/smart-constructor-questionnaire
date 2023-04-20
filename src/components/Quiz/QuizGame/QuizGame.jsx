@@ -16,7 +16,7 @@ function QuizGame({ step, questionData, onClickVariant, totalQuestions }) {
           className={styles.progressInner}
         ></div>
       </div>
-      <h1 className={styles.quizGameTitle}>{questionData.text}</h1>
+      <h2 className={styles.quizGameTitle}>{questionData.text}</h2>
       <ul className={styles.quizGameAnswers}>
         {questionData.answers.map((answer, index) => (
           <li onClick={() => onClickVariant(index)} key={answer.text}>

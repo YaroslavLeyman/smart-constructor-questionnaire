@@ -37,8 +37,28 @@
 
 .cardTextQuestion {
   margin: 5% 0;
+  font-weight: 500;
+}
+
+.cardTextAnswer{
+  display: flex;
+  gap: 15px;
 }
 
 .cardPlaceForAnswer {
   border: 1px solid #000000;
+}
+
+.cardFooterContainer {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 15px;
+  .cardFooterIcons {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+  }
+  .cardFooterText {
+    max-width: 80%;
+  }
 }

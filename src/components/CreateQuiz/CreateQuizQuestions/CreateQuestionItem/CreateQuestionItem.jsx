@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
-import styles from "./CreateQuestionItem.module.scss";
-import { Card, Form, Button, FloatingLabel, FormCheck } from "react-bootstrap";
+import { Card, Form, Button, FloatingLabel } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import {
   addQuestionItem,
@@ -9,15 +8,17 @@ import {
 } from "../../../../redux/actions/quizActions";
 import { v4 as uuidv4 } from "uuid";
 
-
-function CreateQuestionItem({ selectedQuestionData, setShowCreateQuestionItem, onQuestionAddedOrUpdated }) {
+function CreateQuestionItem({
+  selectedQuestionData,
+  setShowCreateQuestionItem,
+  onQuestionAddedOrUpdated,
+}) {
   const [questionText, setQuestionText] = useState("");
   const [isNewQuestion, setIsNewQuestion] = useState(true);
   const dispatch = useDispatch();
   const currentQuizIndex = useSelector((state) => state.quiz.currentQuizIndex);
   const selectedQuestion = useSelector((state) => state.quiz.selectedQuestion);
   const [questionType, setQuestionType] = useState("");
-  const [disableSkipping, setDisableSkipping] = useState(false);
 
   useEffect(() => {
     if (selectedQuestionData) {
@@ -33,6 +34,15 @@ function CreateQuestionItem({ selectedQuestionData, setShowCreateQuestionItem, o
 
   const handleAddQuestionClick = () => {
     if (questionText.trim() !== "") {
+      let answersArray = [];
+  
+      if (questionType === "2") {
+        answersArray = [
+          { text: "Да", isCorrect: false },
+          { text: "Нет", isCorrect: false },
+        ];
+      }
+  
       if (isNewQuestion) {
         dispatch(
           addQuestionItem(
@@ -40,8 +50,7 @@ function CreateQuestionItem({ selectedQuestionData, setShowCreateQuestionItem, o
               id: uuidv4(),
               text: questionText,
               type: questionType,
-              answers: [],
-              disableSkipping: questionType === "2" ? disableSkipping : undefined,
+              answers: answersArray,
             },
             currentQuizIndex
           )
@@ -53,6 +62,7 @@ function CreateQuestionItem({ selectedQuestionData, setShowCreateQuestionItem, o
             ...selectedQuestionData,
             text: questionText,
             type: questionType,
+            answers: answersArray,
           })
         );
       }
@@ -67,7 +77,7 @@ function CreateQuestionItem({ selectedQuestionData, setShowCreateQuestionItem, o
   const handleCancel = () => {
     setQuestionText("");
     setQuestionType("");
-    setShowCreateQuestionItem(false)
+    setShowCreateQuestionItem(false);
     dispatch(selectQuestion(null));
   };
 
@@ -82,14 +92,12 @@ function CreateQuestionItem({ selectedQuestionData, setShowCreateQuestionItem, o
               value={questionType}
               onChange={handleQuestionTypeChange}
             >
-              <option value="">Выберите тип вопроса</option>
-              <option value="1">Выбор из нескольких текстовых вариантов</option>
-              <option value="2">
-                Произвольный ввод текста (однострочный или многострочный)
-              </option>
+              <option value="">Выберите тип вопроса:</option>
+              <option value="1">Выбор из нескольких вариантов</option>
+              <option value="2">Выбор ДА/НЕТ</option>
             </Form.Select>
           </FloatingLabel>
-          <Form.Group controlId="formQuestionText">
+          <Form.Group className="mt-3" controlId="formQuestionText">
             <Form.Label>Текст вопроса</Form.Label>
             <Form.Control
               type="text"
@@ -98,25 +106,16 @@ function CreateQuestionItem({ selectedQuestionData, setShowCreateQuestionItem, o
               onChange={(e) => setQuestionText(e.target.value)}
             />
           </Form.Group>
-
-          {questionType === "2" && (
-            <Form.Group className="mt-3">
-              <FormCheck
-                type="switch"
-                id="disableSkippingSwitch"
-                label="Пропустить вопрос нельзя"
-                checked={disableSkipping}
-                onChange={(e) => setDisableSkipping(e.target.checked)}
-              />
-            </Form.Group>
-          )}
-
-          <Button variant="outline-danger" onClick={handleCancel}>
-            Отменить
-          </Button>
           <Button
+            className="mt-4"
+            variant="outline-danger"
+            onClick={handleCancel}
+          >
+            Отменить
+          </Button>{" "}
+          <Button
+            className="mt-4"
             variant="outline-primary"
-            className={styles.buttonAddQuestion}
             onClick={handleAddQuestionClick}
           >
             {isNewQuestion ? "Создать" : "Сохранить"}

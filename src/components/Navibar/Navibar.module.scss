@@ -1,17 +1,18 @@
-.navbar {
-    min-height: 70px;
+.container {
+  max-width: 999px;
+  .navbar {
+    min-height: 50px;
     border-radius: 5px;
-}
-
-.nav {
-    margin: auto;
-}
-
-.navLink {
-    color: #fff;
-    text-decoration: none;
-    font-size: 20px;
-    &:last-of-type {
-        padding-left: 20px;
+    .nav {
+      margin: auto;
+      .navLink {
+        color: #fff;
+        text-decoration: none;
+        font-size: 20px;
+        &:last-of-type {
+          padding-left: 20px;
+        }
+      }
     }
+  }
 }

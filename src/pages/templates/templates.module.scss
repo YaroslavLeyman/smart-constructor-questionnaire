@@ -1,0 +1,10 @@
+.container {
+  max-width: 999px;
+  .colMargin {
+    padding-right: 15px;
+  }
+  
+  .colMargin:nth-of-type(3n + 3) {
+    padding-right: 0;
+  }
+}

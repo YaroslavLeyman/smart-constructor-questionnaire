@@ -1,3 +1,9 @@
+.footerAnswerContainer {
+  display: flex;
+  justify-content: space-between;
+  margin: 10px 0 15px 0;
+}
+
 .blockButtonQuestion {
   margin-top: 20px;
   .buttonAddQuestion {

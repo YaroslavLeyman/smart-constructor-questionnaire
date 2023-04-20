@@ -15,11 +15,11 @@ export const Quizzes = () => {
   };
 
   return (
-    <Container>
+    <Container className={styles.container}>
       {quizzes.length > 0 ? (
         <>
           <Dropdown>
-            <Dropdown.Toggle variant="dark" id="dropdown-basic">
+            <Dropdown.Toggle className="mt-3" variant="dark" id="dropdown-basic">
               + СОЗДАТЬ КВИЗ
             </Dropdown.Toggle>
 
@@ -31,7 +31,7 @@ export const Quizzes = () => {
           </Dropdown>
           <Row>
             {quizzes.map((quiz, index) => (
-              <Col key={index} md={10}>
+              <Col key={index} md={12}>
                 <QuizItem key={quiz.id} quizData={quiz} quizIndex={index} />
               </Col>
             ))}
