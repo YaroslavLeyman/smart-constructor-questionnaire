@@ -49,7 +49,7 @@ const QuizItem = ({ quizData, quizIndex }) => {
               <div>
                 <Image src={localQuizData.image || defaultImage} className={styles.image} />
               </div>
-              <div>
+              <div className={styles.textContainer}>
                 <Card.Title>{name}</Card.Title>
                 <Card.Text>{title}</Card.Text>
               </div>
