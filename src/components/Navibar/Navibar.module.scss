@@ -5,13 +5,11 @@
     border-radius: 5px;
     .nav {
       margin: auto;
+      gap: 20px;
       .navLink {
         color: #fff;
         text-decoration: none;
         font-size: 20px;
-        &:last-of-type {
-          padding-left: 20px;
-        }
       }
     }
   }
