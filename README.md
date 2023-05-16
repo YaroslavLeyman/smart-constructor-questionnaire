@@ -1,6 +1,6 @@
 # Веб-приложение Конструктор опросников
 
-[Посмотреть](https://YaroslavLeyman.github.io/smart-constructor-questionnaire/)
+## [Посмотреть приложение](https://YaroslavLeyman.github.io/smart-constructor-questionnaire/)
 
 ## Функциональность
 
@@ -11,10 +11,10 @@
 
 ### Технологии
 
-- react.js
-- react-dnd
-- redux
-- redux-thunk
-- scss
-- react-Bootstrap
+- React.js
+- React-dnd
+- Redux
+- Redux-thunk
+- Scss
+- React-Bootstrap
 - html-to-image
