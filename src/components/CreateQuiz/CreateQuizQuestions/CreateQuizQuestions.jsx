@@ -5,8 +5,8 @@ import { HTML5Backend } from "react-dnd-html5-backend";
 import { Row, Col, Card, Button, Form } from "react-bootstrap";
 import styles from "../CreateQuiz.module.scss";
 import QuestionItem from "./QuestionItem/QuestionItem";
-import CreateQuestionItem from "./CreateQuestionItem/CreateQuestionItem";
-import QuestionItemAnswer from "./QuestionItemAnswer/QuestionItemAnswer";
+import CreateQuestionItem from "./CreateItem/CreateItem";
+import QuestionItemAnswer from "./ItemAnswer/ItemAnswer";
 import {
   addQuestionItem,
   selectQuestion,

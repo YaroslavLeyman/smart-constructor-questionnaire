@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import styles from "./QuestionItemAnswer.module.scss";
+import styles from "./ItemAnswer.module.scss";
 import { Row, Col, Card, Form, Button } from "react-bootstrap";
 import { BsTrash } from "react-icons/bs";
 import { updateQuestionItem } from "../../../../redux/actions/quizActions";
