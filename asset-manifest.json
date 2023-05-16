@@ -1,0 +1,14 @@
+{
+  "files": {
+    "main.css": "/smart-constructor-questionnaire/static/css/main.ff3ae2a4.css",
+    "main.js": "/smart-constructor-questionnaire/static/js/main.45ed8538.js",
+    "static/media/default-image.PNG": "/smart-constructor-questionnaire/static/media/default-image.969fe80d9708e61d0513.PNG",
+    "index.html": "/smart-constructor-questionnaire/index.html",
+    "main.ff3ae2a4.css.map": "/smart-constructor-questionnaire/static/css/main.ff3ae2a4.css.map",
+    "main.45ed8538.js.map": "/smart-constructor-questionnaire/static/js/main.45ed8538.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.ff3ae2a4.css",
+    "static/js/main.45ed8538.js"
+  ]
+}
